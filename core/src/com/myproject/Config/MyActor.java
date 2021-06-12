@@ -1,7 +1,9 @@
 package com.myproject.Config;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
@@ -19,8 +21,10 @@ public class MyActor extends Actor {
         void call();
     }
 
-    public Animation<TextureRegion> animation;
+//    public Animation<TextureRegion> animation;
+    public Sprite sprite;
     public float stateTime;
+    public String image;
 
     @Override
     public void act(float delta) {
@@ -30,14 +34,11 @@ public class MyActor extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        int fp = 1, pos = 0;
-        if (flipped){ //si está flippeado
-            fp = -1; //se le da la vuelta
-            pos= WIDTH; //para que la x no se ralle
-        }
         super.draw(batch, parentAlpha);
-        batch.draw(animation.getKeyFrame(stateTime),
-                getX()+dx+pos, getY() + dy, getOriginX(), getOriginY(), getWidth() * fp, getHeight(), getScaleX(), getScaleY(), getRotation());
+//        batch.draw(animation.getKeyFrame(stateTime),
+//                getX()+dx+pos, getY() + dy, getOriginX(), getOriginY(), getWidth() * fp,
+//                getHeight(), getScaleX(), getScaleY(), getRotation());
+        batch.draw(new Sprite(new Texture("cards/"+image+".png")), getX(), getY(), getWidth(), getHeight());
     }
 
     public void setListener(final MyActorListener listener) {

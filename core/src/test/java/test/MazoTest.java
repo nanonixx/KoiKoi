@@ -45,10 +45,14 @@ class MazoTest {
         System.out.println("Base: ");
         Assertions.assertEquals(24, contBase);
 
+        System.out.println("BDB: ");
         Assertions.assertEquals(3, contBDB);
+        System.out.println("BLUE: ");
         Assertions.assertEquals(3, contBLUE);
+        System.out.println("RED: ");
         Assertions.assertEquals(3, contRED);
 
+        System.out.println("Total cards: ");
         Assertions.assertEquals(48, contTotal);
 
         mazo.seeCards();
