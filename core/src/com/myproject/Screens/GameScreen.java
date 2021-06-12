@@ -1,12 +1,9 @@
 package com.myproject.Screens;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.myproject.Assets;
 import com.myproject.Config.BaseImageButton;
 import com.myproject.Config.BaseScreen;
+import com.myproject.Config.MyActor;
 import com.myproject.MyGame;
 import com.myproject.Object.Carta;
 import com.myproject.Object.Mazo;
@@ -24,12 +21,14 @@ public class GameScreen extends BaseScreen {
     Carta selectedCard;
     Carta playingCard;
 
+    boolean selected = false; //activado si la carta ha sido seleccionada
+
     public GameScreen(MyGame game) {
         super(game);
 
         initialGameState();
         addToMano();
-        activarListeners();
+
     }
 
     @Override
@@ -39,6 +38,9 @@ public class GameScreen extends BaseScreen {
         buttonBack = new BaseImageButton("buttons/back.png", "buttons/back.png", 54, 54, 0, 666);
         buttonBack.onClick(()-> setScreen(new MainMenuScreen(game)));
         stage.addActor(buttonBack);
+
+
+        desactivarListeners();
 
         mostrarMano();
         mostrarCartasEnJuego();
@@ -72,35 +74,63 @@ public class GameScreen extends BaseScreen {
     }
 
     private void activarListeners() {
-        cartasMano.forEach(carta -> {
-            carta.setListener(() -> {
-                touched(carta);
+            cartasMano.forEach(carta -> {
+                carta.setListener(() -> {
+                    touched(carta);
+                });
             });
-        });
+            cartasEnJuego.forEach(carta -> {
+                carta.setListener(() -> {
+                    touched(carta);
+                });
+            });
     }
 
+    private void desactivarListeners() {
+        activarListeners();
+//        Cosingas.juego.mano.cartaList.forEach(MyActor::removeListener);
+//        endTurn.removeListener();
+        if (!selected) {
+            cartasEnJuego.forEach(MyActor::removeListener);
+        }
+    }
 
         public void touched(Carta carta) {
-            selectedCard = carta;
-            carta.remove();
-            cartasMano.remove(carta);
 
-                cartasEnJuego.forEach(c -> {
-                    c.setListener(() -> {
-                       playingCard = carta;
-                       c.remove();
-                       cartasEnJuego.remove(carta);
-                    });
-                });
+            for (Carta c: cartasMano) {
+                if (c==carta) {
+                    selectedCard = carta;
+                    selected = true;
+                }
+            }
+            for (Carta c: cartasEnJuego.toArray(new Carta[0])) {
+                if (selected) {
+                    if (c == carta) {
+                        playingCard = carta;
+
+                        selectedCard.remove();
+                        carta.remove();
+
+                        cartasMano.remove(selectedCard);
+                        cartasEnJuego.remove(playingCard);
+
+                        selected = false;
+                    }
+                }
+            }
+
+//        System.out.println("Juego " + selectedCard.image + " a esta carta: " + playingCard.image);
+            desactivarListeners();
         }
 
+
+
     public void mostrarCartasEnJuego() {
-        int cont = 0;
         int dx = 319, dy;
         Carta c;
         for (int i = 0; i < cartasEnJuego.size(); i+=2) {
 
-
+            //coloca las cartas en juego en su sitio, da igual cuantas haya
             for (int j = 0; j < 2; j++) {
                 if (j == 0) {
                     c = cartasEnJuego.get(i);
@@ -117,32 +147,6 @@ public class GameScreen extends BaseScreen {
 
             }
             dx += 106 + 12;
-
-
-//            switch (cont){
-//                case 0: c.setPosition(319, 472);
-//                    break;
-//                case 1: c.setPosition(319, 293);
-//                    break;
-//                case 2: c.setPosition(437, 472);
-//                    break;
-//                case 3: c.setPosition(437, 293);
-//                    break;
-//                case 4: c.setPosition(555, 472);
-//                    break;
-//                case 5: c.setPosition(555, 293);
-//                    break;
-//                case 6: c.setPosition(673, 472);
-//                    break;
-//                case 7: c.setPosition(673, 293);
-//                    break;
-//                case 8: c.setPosition(791, 472);
-//                    break;
-//                case 9: c.setPosition(791, 293);
-//                    break;
-//            }
-
-//            cont++;
         }
 
     }
