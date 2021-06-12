@@ -21,7 +21,7 @@ public class MyActor extends Actor {
         void call();
     }
 
-//    public Animation<TextureRegion> animation;
+    public Animation<TextureRegion> animation;
     public Sprite sprite;
     public float stateTime;
     public String image;
