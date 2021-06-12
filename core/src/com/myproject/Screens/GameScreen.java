@@ -8,14 +8,21 @@ import com.myproject.MyGame;
 import com.myproject.Object.Carta;
 import com.myproject.Object.Mazo;
 
+import java.util.ArrayList;
+
 public class GameScreen extends BaseScreen {
 
     private Texture background;
     private BaseImageButton buttonBack;
     public Mazo mazo = new Mazo();
+    public ArrayList<Carta> cartasMano;
+    public ArrayList<Carta> cartasEnJuego;
 
     public GameScreen(MyGame game) {
         super(game);
+
+        initialGameState();
+        addToMano();
     }
 
     @Override
@@ -26,7 +33,8 @@ public class GameScreen extends BaseScreen {
         buttonBack.onClick(()-> setScreen(new MainMenuScreen(game)));
         stage.addActor(buttonBack);
 
-        mostrarCartas();
+        mostrarMano();
+        mostrarCartasEnJuego();
 
     }
 
@@ -39,13 +47,61 @@ public class GameScreen extends BaseScreen {
         stage.draw();
     }
 
-    public void mostrarCartas(){
+    public void addToMano(){
+        cartasMano = new ArrayList<>();
 
-        for (int i = 0; i <3 ; i++) {
-            Carta c =mazo.getAprilCard(66, 74);
+        for (int i = 75; i < 1100; i+=122+22) {
+            Carta c = mazo.getRandomCard();
+            cartasMano.add(c);
+            c.setWidth(122);
+            c.setHeight(192);
+            c.setPosition(i, 47);
+        }
+    }
 
+    public void mostrarMano(){
+        for (Carta c : cartasMano)
             stage.addActor(c);
-            System.out.println("cartinga");
+    }
+
+
+    public void mostrarCartasEnJuego() {
+        int cont = 0;
+        for (Carta c : cartasEnJuego) {
+
+            switch (cont){
+                case 0: c.setPosition(319, 472);
+                    break;
+                case 1: c.setPosition(319, 293);
+                    break;
+                case 2: c.setPosition(437, 472);
+                    break;
+                case 3: c.setPosition(437, 293);
+                    break;
+                case 4: c.setPosition(555, 472);
+                    break;
+                case 5: c.setPosition(555, 293);
+                    break;
+                case 6: c.setPosition(673, 472);
+                    break;
+                case 7: c.setPosition(673, 293);
+                    break;
+                case 8: c.setPosition(791, 472);
+                    break;
+                case 9: c.setPosition(791, 293);
+                    break;
+            }
+            stage.addActor(c);
+            cont++;
+        }
+
+    }
+
+    public void initialGameState() {
+        cartasEnJuego = new ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            Carta c = mazo.getRandomCard();
+            cartasEnJuego.add(c);
         }
     }
 }

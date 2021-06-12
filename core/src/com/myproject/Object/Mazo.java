@@ -104,17 +104,25 @@ public class Mazo {
 
     }
 
-    public Carta getAprilCard(float x, float y){
+    public Carta getAprilCard(int x, int y){
         Carta a;
         for (Carta c :cartaList) {
             if (c.image.equals("april2")){
                 a = c;
                 a.setPosition(x, y);
+                System.out.println(a.getX());
                 return a;
 
             }
         }
         return null;
 
+    }
+
+    public Carta getRandomCard(){
+        int rnd = random.nextInt(cartaList.size());
+        Carta c = cartaList.get(rnd);
+        cartaList.remove(rnd);
+        return c;
     }
 }
