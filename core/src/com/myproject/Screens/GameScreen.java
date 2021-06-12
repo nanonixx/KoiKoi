@@ -98,9 +98,10 @@ public class GameScreen extends BaseScreen {
         public void touched(Carta carta) {
 
             for (Carta c: cartasMano) {
-                if (c==carta) {
+                if (c == carta) {
                     selectedCard = carta;
                     selected = true;
+                    break;
                 }
             }
             for (Carta c: cartasEnJuego.toArray(new Carta[0])) {
@@ -108,13 +109,18 @@ public class GameScreen extends BaseScreen {
                     if (c == carta) {
                         playingCard = carta;
 
-                        selectedCard.remove();
-                        carta.remove();
+                        if (selectedCard.getMes()==(playingCard.getMes())) {
 
-                        cartasMano.remove(selectedCard);
-                        cartasEnJuego.remove(playingCard);
+                            selectedCard.remove();
+                            carta.remove();
 
-                        selected = false;
+                            cartasMano.remove(selectedCard);
+                            cartasEnJuego.remove(playingCard);
+
+                            mostrarCartasEnJuego();
+
+                            selected = false;
+                        }
                     }
                 }
             }
@@ -136,8 +142,12 @@ public class GameScreen extends BaseScreen {
                     c = cartasEnJuego.get(i);
                     dy = 472;
                 } else {
-                    c = cartasEnJuego.get(i+1);
-                    dy = 293;
+                    try {
+                        c = cartasEnJuego.get(i + 1);
+                        dy = 293;
+                    }catch(Exception e){
+                        break;
+                    }
                 }
 
                 if (c != null) {
