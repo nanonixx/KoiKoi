@@ -139,24 +139,27 @@ public class GameScreen extends BaseScreen {
 
                     cartasMano.remove(selectedCard);
                     Carta nueva = mazo.getRandomCard();
+                    System.out.println(nueva.image);
                     cartasEnJuego.add(nueva);
 
                     Carta trobadaCard = null;
 
                     for (Carta card : cartasEnJuego) {
-                        if (card.getMes() == nueva.getMes()){
+                        if (card.getMes() == nueva.getMes() && !card.image.equals(nueva.image)){
                             yakus.add(card);
                             yakus.add(nueva);
 //
+                            System.out.println("coincide con:" + card.image);
                             trobadaCard = card;
-//
-//                            card.remove();
-//                            nueva.remove();
+
+                            card.remove();
+                            nueva.remove();
+                            break;
                         }
                     }
 
                     if (trobadaCard!=null) {
-//                            cartasEnJuego.remove(nueva);
+                            cartasEnJuego.remove(nueva);
                             cartasEnJuego.remove(trobadaCard);
                     }
 

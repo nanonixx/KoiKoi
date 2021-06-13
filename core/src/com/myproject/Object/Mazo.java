@@ -49,16 +49,16 @@ public class Mazo {
         new Carta("RIBBON", 5, "NORMAL", "may2"),
 
     //JUNIO
-        new Carta("BASE", 5, "NORMAL", "june4"),
-        new Carta("BASE", 5, "NORMAL", "june3"),
-        new Carta("TANE", 5, "BDB", "june1"),
-        new Carta("RIBBON", 5, "BLUE", "june2"),
+        new Carta("BASE", 6, "NORMAL", "june4"),
+        new Carta("BASE", 6, "NORMAL", "june3"),
+        new Carta("TANE", 6, "BDB", "june1"),
+        new Carta("RIBBON", 6, "BLUE", "june2"),
 
     //JULIO
-        new Carta("BASE", 5, "NORMAL", "july4"),
-        new Carta("BASE", 5, "NORMAL", "july3"),
-        new Carta("TANE", 5, "BDB", "july1"),
-        new Carta("RIBBON", 5, "NORMAL", "july2"),
+        new Carta("BASE", 7, "NORMAL", "july4"),
+        new Carta("BASE", 7, "NORMAL", "july3"),
+        new Carta("TANE", 7, "BDB", "july1"),
+        new Carta("RIBBON", 7, "NORMAL", "july2"),
 
     //AGOSTO
         new Carta("BASE", 8, "NORMAL", "august3"),
@@ -67,28 +67,28 @@ public class Mazo {
         new Carta("LIGHT", 8, "MOON", "august1"),
 
     //SEPTIEMBRE
-        new Carta("BASE", 8, "NORMAL", "september3"),
-        new Carta("BASE", 8, "NORMAL", "september4"),
-        new Carta("TANE", 8, "SAKE", "september1"),
-        new Carta("RIBBON", 8, "BLUE", "september2"),
+        new Carta("BASE", 9, "NORMAL", "september3"),
+        new Carta("BASE", 9, "NORMAL", "september4"),
+        new Carta("TANE", 9, "SAKE", "september1"),
+        new Carta("RIBBON", 9, "BLUE", "september2"),
 
     //OCTUBRE
-        new Carta("BASE", 8, "NORMAL", "october3"),
-        new Carta("BASE", 8, "NORMAL", "october4"),
-        new Carta("TANE", 8, "BDB", "october1"),
-        new Carta("RIBBON", 8, "BLUE", "october2"),
+        new Carta("BASE", 10, "NORMAL", "october3"),
+        new Carta("BASE", 10, "NORMAL", "october4"),
+        new Carta("TANE", 10, "BDB", "october1"),
+        new Carta("RIBBON", 10, "BLUE", "october2"),
 
     //NOVIEMBRE
-        new Carta("BASE", 8, "NORMAL", "november4"),
-        new Carta("LIGHT", 8, "RAIN", "november1"),
-        new Carta("TANE", 8, "NORMAL", "november2"),
-        new Carta("RIBBON", 8, "NORMAL", "november3"),
+        new Carta("BASE", 11, "NORMAL", "november4"),
+        new Carta("LIGHT", 11, "RAIN", "november1"),
+        new Carta("TANE", 11, "NORMAL", "november2"),
+        new Carta("RIBBON", 11, "NORMAL", "november3"),
 
     //DICIEMBRE
-        new Carta("BASE", 8, "NORMAL", "december4"),
-        new Carta("BASE", 8, "NORMAL", "december3"),
-        new Carta("BASE", 8, "NORMAL", "december2"),
-        new Carta("LIGHT", 8, "NORMAL", "december1")
+        new Carta("BASE", 12, "NORMAL", "december4"),
+        new Carta("BASE", 12, "NORMAL", "december3"),
+        new Carta("BASE", 12, "NORMAL", "december2"),
+        new Carta("LIGHT", 12, "NORMAL", "december1")
 
 
                 ));
