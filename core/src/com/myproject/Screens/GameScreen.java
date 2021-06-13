@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.myproject.Config.BaseImageButton;
 import com.myproject.Config.BaseScreen;
 import com.myproject.Config.MyActor;
+import com.myproject.GameLogic;
 import com.myproject.MyGame;
 import com.myproject.Object.Carta;
 import com.myproject.Object.Mazo;
@@ -141,6 +142,7 @@ public class GameScreen extends BaseScreen {
                     Carta nueva = mazo.getRandomCard();
                     System.out.println(nueva.image);
                     cartasEnJuego.add(nueva);
+                    System.out.println(GameLogic.checkyakus(yakus));
 
                     Carta trobadaCard = null;
 
@@ -164,6 +166,7 @@ public class GameScreen extends BaseScreen {
                     }
 
                     mostrarCartasEnJuego();
+                    showYakus();
 
                     selected = false;
                 }
@@ -171,7 +174,6 @@ public class GameScreen extends BaseScreen {
         }
     }
 
-    public void checkYakus(){}
 
     public void mostrarCartasEnJuego() {
         int dx = 319, dy;
@@ -204,12 +206,56 @@ public class GameScreen extends BaseScreen {
     }
 
     public void initialGameState() {
+        GameLogic.combo = null;
         cartasEnJuego = new ArrayList<>();
         yakus = new ArrayList<>();
 
         for (int i = 0; i < 8; i++) {
             Carta c = mazo.getRandomCard();
             cartasEnJuego.add(c);
+        }
+    }
+
+    public void showYakus() {
+        Carta chiquita;
+
+        int dyB = 501;
+        int dyT = 501;
+        int dyR = 501;
+        int dyL = 501;
+
+        for (Carta c : yakus) {
+            chiquita =c;
+            chiquita.setHeight(42);
+            chiquita.setWidth(28);
+
+            switch (c.getTipo()){
+                case "BASE":
+
+                    chiquita.setPosition(77, dyB);
+                    dyB -= 21;
+                    stage.addActor(chiquita);
+                    break;
+
+                case "TANE":
+                    chiquita.setPosition(117, dyT);
+                    dyT -= 21;
+                    stage.addActor(chiquita);
+                    break;
+
+                case "RIBBON":
+                    chiquita.setPosition(159, dyR);
+                    dyR -= 21;
+                    stage.addActor(chiquita);
+                    break;
+
+                case "LIGHT":
+                    chiquita.setPosition(202, dyL);
+                    dyL -= 21;
+                    stage.addActor(chiquita);
+                    break;
+            }
+
         }
     }
 
