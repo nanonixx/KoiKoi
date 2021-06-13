@@ -18,13 +18,16 @@ public class GameScreen extends BaseScreen {
 
     public ArrayList<Carta> cartasMano;
     public ArrayList<Carta> cartasEnJuego;
+    public ArrayList<Carta> yakus;
     Carta selectedCard;
     Carta playingCard;
+
 
     boolean selected = false; //activado si la carta ha sido seleccionada
 
     public GameScreen(MyGame game) {
         super(game);
+
 
         initialGameState();
         addToMano();
@@ -104,32 +107,68 @@ public class GameScreen extends BaseScreen {
                     break;
                 }
             }
-            for (Carta c: cartasEnJuego.toArray(new Carta[0])) {
-                if (selected) {
-                    if (c == carta) {
-                        playingCard = carta;
-
-                        if (selectedCard.getMes()==(playingCard.getMes())) {
-
-                            selectedCard.remove();
-                            carta.remove();
-
-                            cartasMano.remove(selectedCard);
-                            cartasEnJuego.remove(playingCard);
-
-                            mostrarCartasEnJuego();
-
-                            selected = false;
-                        }
-                    }
-                }
-            }
+            onPlayCardAction(carta);
 
 //        System.out.println("Juego " + selectedCard.image + " a esta carta: " + playingCard.image);
             desactivarListeners();
         }
 
+    private void onPlayCardAction(Carta carta) {
+        for (Carta c: cartasEnJuego.toArray(new Carta[0])) {
+            if (selected) {
+                if (c == carta) {
+                    playingCard = carta;
 
+                    if (selectedCard.getMes()==(playingCard.getMes())) {
+
+                        selectedCard.remove();
+                        carta.remove();
+
+                        yakus.add(selectedCard);
+                        yakus.add(playingCard);
+
+                        cartasEnJuego.remove(playingCard);
+                    }
+
+                    else {
+                        selectedCard.setHeight(c.HEIGHT);
+                        selectedCard.setWidth(c.WIDTH);
+
+                        cartasEnJuego.add(selectedCard);
+                    }
+
+                    cartasMano.remove(selectedCard);
+                    Carta nueva = mazo.getRandomCard();
+                    cartasEnJuego.add(nueva);
+
+                    Carta trobadaCard = null;
+
+                    for (Carta card : cartasEnJuego) {
+                        if (card.getMes() == nueva.getMes()){
+                            yakus.add(card);
+                            yakus.add(nueva);
+//
+                            trobadaCard = card;
+//
+//                            card.remove();
+//                            nueva.remove();
+                        }
+                    }
+
+                    if (trobadaCard!=null) {
+//                            cartasEnJuego.remove(nueva);
+                            cartasEnJuego.remove(trobadaCard);
+                    }
+
+                    mostrarCartasEnJuego();
+
+                    selected = false;
+                }
+            }
+        }
+    }
+
+    public void checkYakus(){}
 
     public void mostrarCartasEnJuego() {
         int dx = 319, dy;
@@ -163,6 +202,8 @@ public class GameScreen extends BaseScreen {
 
     public void initialGameState() {
         cartasEnJuego = new ArrayList<>();
+        yakus = new ArrayList<>();
+
         for (int i = 0; i < 8; i++) {
             Carta c = mazo.getRandomCard();
             cartasEnJuego.add(c);
