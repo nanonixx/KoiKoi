@@ -1,4 +1,10 @@
 package com.myproject.Screens;
 
-public class HowToPlayScreen {
+import com.myproject.Config.BaseScreen;
+import com.myproject.MyGame;
+
+public class HowToPlayScreen extends BaseScreen {
+    public HowToPlayScreen(MyGame game) {
+        super(game);
+    }
 }

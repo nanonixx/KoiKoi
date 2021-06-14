@@ -68,7 +68,7 @@ public class GameScreen extends BaseScreen {
             cartasMano.add(c);
             c.setWidth(122);
             c.setHeight(192);
-            c.setPosition(i, 47);
+            c.setPosition(i, 27);
         }
     }
 
