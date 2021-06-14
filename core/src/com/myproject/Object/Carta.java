@@ -8,8 +8,8 @@ import com.myproject.Config.MyActor;
 
 public class Carta extends MyActor {
 
-    public int WIDTH = 106;
-    public int HEIGHT = 167;
+    public int WIDTH = 100;
+    public int HEIGHT = 158;
 
 
     private String tipo;

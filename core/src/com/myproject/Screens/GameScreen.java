@@ -176,7 +176,7 @@ public class GameScreen extends BaseScreen {
 
 
     public void mostrarCartasEnJuego() {
-        int dx = 319, dy;
+        int dx = 302, dy;
         Carta c;
         for (int i = 0; i < cartasEnJuego.size(); i+=2) {
 
@@ -184,11 +184,11 @@ public class GameScreen extends BaseScreen {
             for (int j = 0; j < 2; j++) {
                 if (j == 0) {
                     c = cartasEnJuego.get(i);
-                    dy = 472;
+                    dy = 480;
                 } else {
                     try {
                         c = cartasEnJuego.get(i + 1);
-                        dy = 293;
+                        dy =301;
                     }catch(Exception e){
                         break;
                     }
@@ -200,7 +200,7 @@ public class GameScreen extends BaseScreen {
                 }
 
             }
-            dx += 106 + 12;
+            dx += 100 + 15;
         }
 
     }
@@ -219,38 +219,38 @@ public class GameScreen extends BaseScreen {
     public void showYakus() {
         Carta chiquita;
 
-        int dyB = 501;
-        int dyT = 501;
-        int dyR = 501;
-        int dyL = 501;
+        int dyB = 489;
+        int dyT = 489;
+        int dyR = 489;
+        int dyL = 489;
 
         for (Carta c : yakus) {
             chiquita =c;
-            chiquita.setHeight(42);
-            chiquita.setWidth(28);
+            chiquita.setHeight(66);
+            chiquita.setWidth(40);
 
             switch (c.getTipo()){
                 case "BASE":
 
-                    chiquita.setPosition(77, dyB);
+                    chiquita.setPosition(64, dyB);
                     dyB -= 21;
                     stage.addActor(chiquita);
                     break;
 
                 case "TANE":
-                    chiquita.setPosition(117, dyT);
+                    chiquita.setPosition(112, dyT);
                     dyT -= 21;
                     stage.addActor(chiquita);
                     break;
 
                 case "RIBBON":
-                    chiquita.setPosition(159, dyR);
+                    chiquita.setPosition(160, dyR);
                     dyR -= 21;
                     stage.addActor(chiquita);
                     break;
 
                 case "LIGHT":
-                    chiquita.setPosition(202, dyL);
+                    chiquita.setPosition(208, dyL);
                     dyL -= 21;
                     stage.addActor(chiquita);
                     break;
