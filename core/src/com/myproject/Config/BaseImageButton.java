@@ -13,13 +13,25 @@ public class BaseImageButton extends ImageButton {
         void onClick();
     }
 
+
+
     public BaseImageButton(String image_up, String image_over, int ancho, int alto, int x, int y){
         super(new ImageButtonStyle());
-
         getStyle().up = new TextureRegionDrawable(new TextureRegion(new Texture(image_up)));
         getStyle().over = new TextureRegionDrawable(new TextureRegion(new Texture(image_over)));
         setSize(ancho, alto);
         setPosition(x, y);
+    }
+
+    public BaseImageButton(String image_up, int ancho, int alto, int x, int y) {
+
+        super(new ImageButtonStyle());
+        getStyle().up = new TextureRegionDrawable(new TextureRegion(new Texture( "buttons/" + image_up + ".png")));
+        getStyle().over = new TextureRegionDrawable(new TextureRegion(new Texture("buttons/" + image_up + "_over.png")));
+        getStyle().down = new TextureRegionDrawable(new TextureRegion(new Texture("buttons/" + image_up + "_botonado.png")));
+        setSize(ancho, alto);
+        setPosition(x, y);
+
     }
 
     public interface Callback { void call();}
