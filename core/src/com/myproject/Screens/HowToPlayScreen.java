@@ -15,6 +15,7 @@ public class HowToPlayScreen extends BaseScreen {
 
     Texture background;
     private BaseImageButton buttonInfo, buttonDynamics, buttonCards, buttonYakus;
+    private BaseImageButton buttongoBackInfo, buttonGoBackYakus, buttonPrev, buttonNext;
 
     Image main, genInfo, dyns, cards, yakus;
 
@@ -39,6 +40,11 @@ public class HowToPlayScreen extends BaseScreen {
         yakus = new Image(new Texture("elementos/yakusInfo.png"));
         yakus.setPosition(129, 62);
 
+        buttongoBackInfo = new BaseImageButton("goBack", 140, 55, 847, 105);
+        buttonGoBackYakus = new BaseImageButton("goBack", 140, 55, 1014, 105);
+        buttonPrev = new BaseImageButton("prev", 140, 55, 847, 105);
+        buttonNext = new BaseImageButton("next", 140, 55, 1014, 105);
+
 
 
         buttonInfo = new BaseImageButton("ir", 140, 55, 702, 446);
@@ -46,6 +52,19 @@ public class HowToPlayScreen extends BaseScreen {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 stage.addActor(genInfo);
+
+                buttonNext.addListener(new InputListener() {
+                  @Override
+                  public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                        stage.addActor(dyns);
+
+                        genInfo.remove();
+                        buttonNext.remove();
+                        //buttongoBackInfo.remove();
+                      return super.touchDown(event, x, y, pointer, button);
+                   }
+                  });
+
 
                 main.remove();
                 buttonInfo.remove();
@@ -108,6 +127,9 @@ public class HowToPlayScreen extends BaseScreen {
             }
         });
         stage.addActor(buttonYakus);
+
+
+
 
     }
 

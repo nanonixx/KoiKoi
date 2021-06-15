@@ -1,6 +1,7 @@
 package com.myproject.Screens;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.myproject.Config.BaseImageButton;
 import com.myproject.Config.BaseScreen;
 import com.myproject.Config.MyActor;
@@ -15,6 +16,7 @@ public class GameScreen extends BaseScreen {
 
     private Texture background;
     private BaseImageButton buttonBack;
+    private Image addCards;
     public Mazo mazo = new Mazo();
 
     public ArrayList<Carta> cartasMano;
@@ -43,6 +45,7 @@ public class GameScreen extends BaseScreen {
         buttonBack.onClick(()-> setScreen(new MainMenuScreen(game)));
         stage.addActor(buttonBack);
 
+        addCards = new Image(new Texture("elementos/addCard.png"));
 
         desactivarListeners();
 
@@ -176,32 +179,41 @@ public class GameScreen extends BaseScreen {
 
 
     public void mostrarCartasEnJuego() {
-        int dx = 302, dy;
-        Carta c;
+        int dx = 302, dy = 0;
+        Carta c = null;
+        addCards.remove();
+
         for (int i = 0; i < cartasEnJuego.size(); i+=2) {
 
             //coloca las cartas en juego en su sitio, da igual cuantas haya
             for (int j = 0; j < 2; j++) {
                 if (j == 0) {
-                    c = cartasEnJuego.get(i);
-                    dy = 480;
+                    try {
+                        c = cartasEnJuego.get(i);
+                        dy = 480;
+                    } catch (Exception e) {}
                 } else {
                     try {
                         c = cartasEnJuego.get(i + 1);
-                        dy =301;
+                        dy = 301;
                     }catch(Exception e){
-                        break;
                     }
                 }
 
                 if (c != null) {
                     c.setPosition(dx, dy);
                     stage.addActor(c);
+                } else {
+
                 }
 
             }
             dx += 100 + 15;
         }
+
+        addCards.setPosition(dx, 480);
+        stage.addActor(addCards);
+        System.out.println("Añado addcards este ya");
 
     }
 
