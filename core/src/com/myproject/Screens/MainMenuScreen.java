@@ -28,8 +28,7 @@ public class MainMenuScreen extends BaseScreen {
 
     @Override
     public void show() {
-        background = new Texture("backgrounds/bg_test.png");
-//        screenName = new Image(new Texture());
+        background = new Texture("backgrounds/mainMenu.png");
 
         buttonPlay = new BaseImageButton("jugar", 277, 70, 108, 350);
         buttonPlay.addListener(new InputListener() {
@@ -38,6 +37,7 @@ public class MainMenuScreen extends BaseScreen {
                 buttonPlay.remove();
                 buttonOptions.remove();
                 buttonQuit.remove();
+                buttonInstr.remove();
 
                 stage.addActor(buttonSP);
                 stage.addActor(buttonMP);
@@ -48,19 +48,20 @@ public class MainMenuScreen extends BaseScreen {
         });
         stage.addActor(buttonPlay);
 
-        buttonOptions = new BaseImageButton("opciones", 277, 70, 108, 214);
+        buttonOptions = new BaseImageButton("opciones", 277, 70, 108, 184);
         buttonOptions.onClick(()-> setScreen(new SettingsScreen(game)));
         stage.addActor(buttonOptions);
 
-        buttonQuit = new BaseImageButton("salir", 277, 70, 108, (99));
+        buttonQuit = new BaseImageButton("salir", 277, 70, 108, 99);
         buttonQuit.onClick(()-> Gdx.app.exit());
         stage.addActor(buttonQuit);
 
        buttonSP = new BaseImageButton("sp", 277, 70, 108, 302);
        buttonSP.onClick(()-> setScreen(new GameScreen(game)));
 
-        buttonSP = new BaseImageButton("instr", 277, 70, 108, 269);
-        buttonSP.onClick(()-> setScreen(new HowToPlayScreen(game)));
+        buttonInstr = new BaseImageButton("instr", 277, 70, 108, 269);
+        buttonInstr.onClick(()-> setScreen(new HowToPlayScreen(game)));
+        stage.addActor(buttonInstr);
 
        buttonMP = new BaseImageButton("mp", 277, 70, 108, 217);
         buttonMP.addListener(new InputListener() {
@@ -85,6 +86,7 @@ public class MainMenuScreen extends BaseScreen {
 
                 stage.addActor(buttonPlay);
                 stage.addActor(buttonOptions);
+                stage.addActor(buttonInstr);
                 stage.addActor(buttonQuit);
 
                 return super.touchDown(event, x, y, pointer, button);
