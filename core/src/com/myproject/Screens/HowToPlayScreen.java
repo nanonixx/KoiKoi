@@ -7,6 +7,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.myproject.Config.BaseImageButton;
 import com.myproject.Config.BaseScreen;
 import com.myproject.MyGame;
+import com.myproject.Screens.userManual.CardInfoScreen;
+import com.myproject.Screens.userManual.DynsInfoScreen;
+import com.myproject.Screens.userManual.GenInfoScreen;
+import com.myproject.Screens.userManual.YakusInfoScreen;
 
 public class HowToPlayScreen extends BaseScreen {
     public HowToPlayScreen(MyGame game) {
@@ -15,7 +19,7 @@ public class HowToPlayScreen extends BaseScreen {
 
     Texture background;
     private BaseImageButton buttonInfo, buttonDynamics, buttonCards, buttonYakus;
-    private BaseImageButton buttongoBackInfo, buttonGoBackYakus, buttonPrev, buttonNext;
+    private BaseImageButton buttongoBack, buttonPrev, buttonNext, buttonBack;
 
     Image main, genInfo, dyns, cards, yakus;
 
@@ -24,112 +28,32 @@ public class HowToPlayScreen extends BaseScreen {
         super.show();
         background = new Texture("backgrounds/howToPlayMain.png");
 
-        main = new Image(new Texture("elementos/userManual.png"));
-        main.setPosition(144, 172);
-        stage.addActor(main);
-
-        genInfo = new Image(new Texture("elementos/genInfo.png"));
-        genInfo.setPosition(129, 62);
-
-        dyns = new Image(new Texture("elementos/DynsInfo.png"));
-        dyns.setPosition(129, 62);
-
-        cards = new Image(new Texture("elementos/cardsInfo.png"));
-        cards.setPosition(129, 62);
-
-        yakus = new Image(new Texture("elementos/yakusInfo.png"));
-        yakus.setPosition(129, 62);
-
-        buttongoBackInfo = new BaseImageButton("goBack", 140, 55, 847, 105);
-        buttonGoBackYakus = new BaseImageButton("goBack", 140, 55, 1014, 105);
+        buttongoBack = new BaseImageButton("goBack", 140, 55, 847, 105);
         buttonPrev = new BaseImageButton("prev", 140, 55, 847, 105);
         buttonNext = new BaseImageButton("next", 140, 55, 1014, 105);
-
+        buttonBack = new BaseImageButton("back", 274, 65, 116, 59);
 
 
         buttonInfo = new BaseImageButton("ir", 140, 55, 702, 446);
-        buttonInfo.addListener(new InputListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                stage.addActor(genInfo);
-
-                buttonNext.addListener(new InputListener() {
-                  @Override
-                  public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                        stage.addActor(dyns);
-
-                        genInfo.remove();
-                        buttonNext.remove();
-                        //buttongoBackInfo.remove();
-                      return super.touchDown(event, x, y, pointer, button);
-                   }
-                  });
-
-
-                main.remove();
-                buttonInfo.remove();
-                buttonDynamics.remove();
-                buttonCards.remove();
-                buttonYakus.remove();
-
-                return super.touchDown(event, x, y, pointer, button);
-            }
-        });
+        buttonInfo.onClick(()-> setScreen(new GenInfoScreen(game)));
         stage.addActor(buttonInfo);
 
         buttonDynamics = new BaseImageButton("ir", 140, 55, 702, 370);
-        buttonDynamics.addListener(new InputListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                stage.addActor(dyns);
-
-                main.remove();
-                buttonInfo.remove();
-                buttonDynamics.remove();
-                buttonCards.remove();
-                buttonYakus.remove();
-
-                return super.touchDown(event, x, y, pointer, button);
-            }
-        });
+        buttonDynamics.onClick(()-> setScreen(new DynsInfoScreen(game)));
         stage.addActor(buttonDynamics);
 
         buttonCards = new BaseImageButton("ir", 140, 55, 702, 287);
-        buttonCards.addListener(new InputListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                stage.addActor(cards);
-
-                main.remove();
-                buttonInfo.remove();
-                buttonDynamics.remove();
-                buttonCards.remove();
-                buttonYakus.remove();
-
-                return super.touchDown(event, x, y, pointer, button);
-            }
-        });
+        buttonCards.onClick(()-> setScreen(new CardInfoScreen(game)));
         stage.addActor(buttonCards);
 
         buttonYakus = new BaseImageButton("ir", 140, 55, 702, 209);
-        buttonYakus.addListener(new InputListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                stage.addActor(yakus);
-
-                main.remove();
-                buttonInfo.remove();
-                buttonDynamics.remove();
-                buttonCards.remove();
-                buttonYakus.remove();
-
-                return super.touchDown(event, x, y, pointer, button);
-            }
-        });
+        buttonYakus.onClick(()-> setScreen(new YakusInfoScreen(game)));
         stage.addActor(buttonYakus);
 
 
 
+        buttonBack.onClick(()-> setScreen(new MainMenuScreen(game)));
+        stage.addActor(buttonBack);
 
     }
 
