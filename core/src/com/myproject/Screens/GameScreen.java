@@ -1,6 +1,8 @@
 package com.myproject.Screens;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.myproject.Config.BaseImageButton;
 import com.myproject.Config.BaseScreen;
@@ -46,7 +48,19 @@ public class GameScreen extends BaseScreen {
         stage.addActor(buttonBack);
 
         addCards = new Image(new Texture("elementos/addCard.png"));
+        addCards.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 
+                selectedCard.setHeight(158);
+                selectedCard.setWidth(100);
+
+                cartasEnJuego.add(selectedCard);
+                acabarTurno();
+
+                return super.touchDown(event, x, y, pointer, button);
+            }
+        });
         desactivarListeners();
 
         mostrarMano();
@@ -132,49 +146,44 @@ public class GameScreen extends BaseScreen {
                         yakus.add(playingCard);
 
                         cartasEnJuego.remove(playingCard);
+                        acabarTurno();
                     }
-
-                    else {
-                        selectedCard.setHeight(c.HEIGHT);
-                        selectedCard.setWidth(c.WIDTH);
-
-                        cartasEnJuego.add(selectedCard);
-                    }
-
-                    cartasMano.remove(selectedCard);
-                    Carta nueva = mazo.getRandomCard();
-                    System.out.println(nueva.image);
-                    cartasEnJuego.add(nueva);
-                    System.out.println(GameLogic.checkyakus(yakus));
-
-                    Carta trobadaCard = null;
-
-                    for (Carta card : cartasEnJuego) {
-                        if (card.getMes() == nueva.getMes() && !card.image.equals(nueva.image)){
-                            yakus.add(card);
-                            yakus.add(nueva);
-//
-                            System.out.println("coincide con:" + card.image);
-                            trobadaCard = card;
-
-                            card.remove();
-                            nueva.remove();
-                            break;
-                        }
-                    }
-
-                    if (trobadaCard!=null) {
-                            cartasEnJuego.remove(nueva);
-                            cartasEnJuego.remove(trobadaCard);
-                    }
-
-                    mostrarCartasEnJuego();
-                    showYakus();
-
-                    selected = false;
                 }
             }
         }
+    }
+
+    private void acabarTurno() {
+        cartasMano.remove(selectedCard);
+        Carta nueva = mazo.getRandomCard();
+        System.out.println(nueva.image);
+        cartasEnJuego.add(nueva);
+        System.out.println(GameLogic.checkyakus(yakus));
+
+        Carta trobadaCard = null;
+
+        for (Carta card : cartasEnJuego) {
+            if (card.getMes() == nueva.getMes() && !card.image.equals(nueva.image)){
+                yakus.add(card);
+                yakus.add(nueva);
+
+                trobadaCard = card;
+
+                card.remove();
+                nueva.remove();
+                break;
+            }
+        }
+
+        if (trobadaCard!=null) {
+                cartasEnJuego.remove(nueva);
+                cartasEnJuego.remove(trobadaCard);
+        }
+
+        mostrarCartasEnJuego();
+        showYakus();
+
+        selected = false;
     }
 
 
