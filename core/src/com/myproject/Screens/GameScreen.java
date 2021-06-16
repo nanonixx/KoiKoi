@@ -65,7 +65,7 @@ public class GameScreen extends BaseScreen {
                 selectedCard.setWidth(100);
 
                 cartasEnJuego.add(selectedCard);
-                acabarTurno();
+                acabarTurno(true);
 
                 return super.touchDown(event, x, y, pointer, button);
             }
@@ -159,7 +159,7 @@ public class GameScreen extends BaseScreen {
 
                         cartasEnJuego.remove(playingCard);
                         cartasMano.remove(selectedCard);
-                        acabarTurno();
+                        acabarTurno(true);
 
                         AIplay();
                     }
@@ -168,7 +168,7 @@ public class GameScreen extends BaseScreen {
         }
     }
 
-    private void acabarTurno() {
+    private void acabarTurno(boolean turno) {
 
         Carta nueva = mazo.getRandomCard();
         System.out.println(nueva.image);
@@ -179,8 +179,13 @@ public class GameScreen extends BaseScreen {
 
         for (Carta card : cartasEnJuego) {
             if (card.getMes() == nueva.getMes() && !card.image.equals(nueva.image)){
-                yakus.add(card);
-                yakus.add(nueva);
+
+               if (turno) {yakus.add(card);
+                   yakus.add(nueva);}
+               else {
+                   yakusAI.add(card);
+                   yakusAI.add(nueva);
+               }
 
                 trobadaCard = card;
 
@@ -198,7 +203,7 @@ public class GameScreen extends BaseScreen {
 
         showYakus();
         showYakusAI();
-        System.out.println("Yakus P1: "+GameLogic.checkyakus(yakus));
+        System.out.println("Yakus P1: "+GameLogic.checkyakus(yakus) + " y tiene estas cartas: "+cartasManoAI.size());
         System.out.println("Yakus AI: "+GameLogic.checkyakus(yakusAI));
 
         mostrarCartasEnJuego();
@@ -285,7 +290,7 @@ public class GameScreen extends BaseScreen {
             cartasManoAI.remove(cartaMano);
         }
 
-        acabarTurno();
+        acabarTurno(false);
         if (cartaMano != null) System.out.println("AI jugado ya "+ cartaMano.getImage() + " en " + cartaMesa.getImage());
         System.out.println("AI tiene estos yakus: " + yakusAI.size());
     }
