@@ -22,10 +22,17 @@ public class GameScreen extends BaseScreen {
     public Mazo mazo = new Mazo();
 
     public ArrayList<Carta> cartasMano;
+    public ArrayList<Carta> cartasManoAI;
     public ArrayList<Carta> cartasEnJuego;
     public ArrayList<Carta> yakus;
+    public ArrayList<Carta> yakusAI;
+    public ArrayList<String> yakusAInames;
+
     Carta selectedCard;
     Carta playingCard;
+
+    boolean turn = true, gameOver = false;
+    int rondas = 1, score = 50, scoreAI = 50, mult = 1;
 
 
     boolean selected = false; //activado si la carta ha sido seleccionada
@@ -33,9 +40,11 @@ public class GameScreen extends BaseScreen {
     public GameScreen(MyGame game) {
         super(game);
 
+        cartasMano = addToMano();
+        cartasManoAI = addToMano();
+            initialGameState();
 
-        initialGameState();
-        addToMano();
+
 
     }
 
@@ -77,16 +86,18 @@ public class GameScreen extends BaseScreen {
         stage.draw();
     }
 
-    public void addToMano(){
-        cartasMano = new ArrayList<>();
+    public ArrayList<Carta> addToMano(){
+        ArrayList<Carta> manita = new ArrayList<>();
 
         for (int i = 75; i < 1100; i+=122+22) {
             Carta c = mazo.getRandomCard();
-            cartasMano.add(c);
+            manita.add(c);
             c.setWidth(122);
             c.setHeight(192);
             c.setPosition(i, 27);
         }
+
+        return manita;
     }
 
     public void mostrarMano(){
@@ -129,6 +140,7 @@ public class GameScreen extends BaseScreen {
 
 //        System.out.println("Juego " + selectedCard.image + " a esta carta: " + playingCard.image);
             desactivarListeners();
+
         }
 
     private void onPlayCardAction(Carta carta) {
@@ -146,7 +158,10 @@ public class GameScreen extends BaseScreen {
                         yakus.add(playingCard);
 
                         cartasEnJuego.remove(playingCard);
+                        cartasMano.remove(selectedCard);
                         acabarTurno();
+
+                        AIplay();
                     }
                 }
             }
@@ -154,11 +169,11 @@ public class GameScreen extends BaseScreen {
     }
 
     private void acabarTurno() {
-        cartasMano.remove(selectedCard);
+
         Carta nueva = mazo.getRandomCard();
         System.out.println(nueva.image);
         cartasEnJuego.add(nueva);
-        System.out.println(GameLogic.checkyakus(yakus));
+
 
         Carta trobadaCard = null;
 
@@ -180,9 +195,13 @@ public class GameScreen extends BaseScreen {
                 cartasEnJuego.remove(trobadaCard);
         }
 
-        mostrarCartasEnJuego();
-        showYakus();
 
+        showYakus();
+        showYakusAI();
+        System.out.println("Yakus P1: "+GameLogic.checkyakus(yakus));
+        System.out.println("Yakus AI: "+GameLogic.checkyakus(yakusAI));
+
+        mostrarCartasEnJuego();
         selected = false;
     }
 
@@ -222,7 +241,6 @@ public class GameScreen extends BaseScreen {
 
         addCards.setPosition(dx, 480);
         stage.addActor(addCards);
-        System.out.println("Añado addcards este ya");
 
     }
 
@@ -230,12 +248,51 @@ public class GameScreen extends BaseScreen {
         GameLogic.combo = null;
         cartasEnJuego = new ArrayList<>();
         yakus = new ArrayList<>();
+        yakusAI = new ArrayList<>();
 
         for (int i = 0; i < 8; i++) {
             Carta c = mazo.getRandomCard();
             cartasEnJuego.add(c);
         }
     }
+
+    public void AIplay() {
+        Carta cartaMano = null;
+        Carta cartaMesa = null;
+        for (Carta cMano : cartasManoAI) {
+            for (Carta cMesa : cartasEnJuego) {
+                if (cMesa.getMes() == cMano.getMes()) {
+                    cMesa.remove();
+
+                    yakusAI.add(cMesa);
+                    yakusAI.add(cMano);
+                    cartaMesa = cMesa;
+                    cartaMano = cMano;
+                            break;
+                }
+            }
+        }
+        if (cartaMano == null) {
+            //poner una random fuera
+            cartasManoAI.get(0).setHeight(158);
+            cartasManoAI.get(0).setWidth(100);
+            cartasEnJuego.add(cartasManoAI.get(0));
+            cartasManoAI.remove(0);
+
+        }
+        if (cartaMano != null) {
+            cartasEnJuego.remove(cartaMesa);
+            cartasManoAI.remove(cartaMano);
+        }
+
+        acabarTurno();
+        if (cartaMano != null) System.out.println("AI jugado ya "+ cartaMano.getImage() + " en " + cartaMesa.getImage());
+        System.out.println("AI tiene estos yakus: " + yakusAI.size());
+    }
+
+
+
+
 
     public void showYakus() {
         Carta chiquita;
@@ -272,6 +329,49 @@ public class GameScreen extends BaseScreen {
 
                 case "LIGHT":
                     chiquita.setPosition(208, dyL);
+                    dyL -= 21;
+                    stage.addActor(chiquita);
+                    break;
+            }
+
+        }
+    }
+
+    public void showYakusAI() {
+        Carta chiquita;
+
+        int dyB = 489;
+        int dyT = 489;
+        int dyR = 489;
+        int dyL = 489;
+
+        for (Carta c : yakusAI) {
+            chiquita =c;
+            chiquita.setHeight(66);
+            chiquita.setWidth(40);
+
+            switch (c.getTipo()){
+                case "BASE":
+
+                    chiquita.setPosition(1027, dyB);
+                    dyB -= 21;
+                    stage.addActor(chiquita);
+                    break;
+
+                case "TANE":
+                    chiquita.setPosition(1075, dyT);
+                    dyT -= 21;
+                    stage.addActor(chiquita);
+                    break;
+
+                case "RIBBON":
+                    chiquita.setPosition(1123, dyR);
+                    dyR -= 21;
+                    stage.addActor(chiquita);
+                    break;
+
+                case "LIGHT":
+                    chiquita.setPosition(1171, dyL);
                     dyL -= 21;
                     stage.addActor(chiquita);
                     break;
