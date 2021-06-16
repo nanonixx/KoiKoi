@@ -8,6 +8,7 @@ import com.myproject.Config.BaseImageButton;
 import com.myproject.Config.BaseScreen;
 import com.myproject.Config.MyActor;
 import com.myproject.GameLogic;
+import com.myproject.Juego;
 import com.myproject.MyGame;
 import com.myproject.Object.Carta;
 import com.myproject.Object.Mazo;
@@ -16,26 +17,41 @@ import java.util.ArrayList;
 
 public class GameScreen extends BaseScreen {
 
+    Juego juego = new Juego(game);
     private Texture background;
     private BaseImageButton buttonBack;
     private Image addCards;
-    public Mazo mazo = new Mazo();
 
-    public ArrayList<Carta> cartasMano;
-    public ArrayList<Carta> cartasEnJuego;
+
     public ArrayList<Carta> yakus;
-    Carta selectedCard;
-    Carta playingCard;
+    boolean turn = true;
+    boolean gameOver = false;
+    
+
+    
 
 
-    boolean selected = false; //activado si la carta ha sido seleccionada
+
+    //activado si la carta ha sido seleccionada
 
     public GameScreen(MyGame game) {
         super(game);
 
-
-        initialGameState();
         addToMano();
+        while (!gameOver) {
+            if (turn) { //turno player
+
+               juego.initialGameState();
+                juego.acabarTurno();
+            } else { //turno CPU
+
+            }
+            showYakus();
+            mostrarMano();
+
+            turn = !turn;
+        }
+
 
     }
 
@@ -52,11 +68,11 @@ public class GameScreen extends BaseScreen {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 
-                selectedCard.setHeight(158);
-                selectedCard.setWidth(100);
+                juego.selectedCard.setHeight(158);
+                juego.selectedCard.setWidth(100);
 
-                cartasEnJuego.add(selectedCard);
-                acabarTurno();
+                juego.cartasEnJuego.add(juego.selectedCard);
+                juego.acabarTurno();
 
                 return super.touchDown(event, x, y, pointer, button);
             }
@@ -64,7 +80,7 @@ public class GameScreen extends BaseScreen {
         desactivarListeners();
 
         mostrarMano();
-        mostrarCartasEnJuego();
+        mostrarcartasEnJuego();
 
     }
 
@@ -78,11 +94,11 @@ public class GameScreen extends BaseScreen {
     }
 
     public void addToMano(){
-        cartasMano = new ArrayList<>();
+        juego.cartasMano = new ArrayList<>();
 
         for (int i = 75; i < 1100; i+=122+22) {
-            Carta c = mazo.getRandomCard();
-            cartasMano.add(c);
+            Carta c = juego.mazo.getRandomCard();
+            juego.cartasMano.add(c);
             c.setWidth(122);
             c.setHeight(192);
             c.setPosition(i, 27);
@@ -90,17 +106,17 @@ public class GameScreen extends BaseScreen {
     }
 
     public void mostrarMano(){
-        for (Carta c : cartasMano)
+        for (Carta c : juego.cartasMano)
             stage.addActor(c);
     }
 
     private void activarListeners() {
-            cartasMano.forEach(carta -> {
+            juego.cartasMano.forEach(carta -> {
                 carta.setListener(() -> {
                     touched(carta);
                 });
             });
-            cartasEnJuego.forEach(carta -> {
+            juego.cartasEnJuego.forEach(carta -> {
                 carta.setListener(() -> {
                     touched(carta);
                 });
@@ -111,99 +127,42 @@ public class GameScreen extends BaseScreen {
         activarListeners();
 //        Cosingas.juego.mano.cartaList.forEach(MyActor::removeListener);
 //        endTurn.removeListener();
-        if (!selected) {
-            cartasEnJuego.forEach(MyActor::removeListener);
+        if (!juego.isSelected()) {
+            juego.cartasEnJuego.forEach(MyActor::removeListener);
         }
     }
 
         public void touched(Carta carta) {
 
-            for (Carta c: cartasMano) {
-                if (c == carta) {
-                    selectedCard = carta;
-                    selected = true;
-                    break;
-                }
-            }
-            onPlayCardAction(carta);
-
-//        System.out.println("Juego " + selectedCard.image + " a esta carta: " + playingCard.image);
+            juego.playCard(carta, juego.selectedCard);
             desactivarListeners();
+
         }
 
-    private void onPlayCardAction(Carta carta) {
-        for (Carta c: cartasEnJuego.toArray(new Carta[0])) {
-            if (selected) {
-                if (c == carta) {
-                    playingCard = carta;
-
-                    if (selectedCard.getMes()==(playingCard.getMes())) {
-
-                        selectedCard.remove();
-                        carta.remove();
-
-                        yakus.add(selectedCard);
-                        yakus.add(playingCard);
-
-                        cartasEnJuego.remove(playingCard);
-                        acabarTurno();
-                    }
-                }
-            }
-        }
-    }
-
-    private void acabarTurno() {
-        cartasMano.remove(selectedCard);
-        Carta nueva = mazo.getRandomCard();
-        System.out.println(nueva.image);
-        cartasEnJuego.add(nueva);
-        System.out.println(GameLogic.checkyakus(yakus));
-
-        Carta trobadaCard = null;
-
-        for (Carta card : cartasEnJuego) {
-            if (card.getMes() == nueva.getMes() && !card.image.equals(nueva.image)){
-                yakus.add(card);
-                yakus.add(nueva);
-
-                trobadaCard = card;
-
-                card.remove();
-                nueva.remove();
-                break;
-            }
-        }
-
-        if (trobadaCard!=null) {
-                cartasEnJuego.remove(nueva);
-                cartasEnJuego.remove(trobadaCard);
-        }
-
-        mostrarCartasEnJuego();
-        showYakus();
-
-        selected = false;
-    }
 
 
-    public void mostrarCartasEnJuego() {
+
+
+
+
+
+    public void mostrarcartasEnJuego() {
         int dx = 302, dy = 0;
         Carta c = null;
         addCards.remove();
 
-        for (int i = 0; i < cartasEnJuego.size(); i+=2) {
+        for (int i = 0; i < juego.cartasEnJuego.size(); i+=2) {
 
             //coloca las cartas en juego en su sitio, da igual cuantas haya
             for (int j = 0; j < 2; j++) {
                 if (j == 0) {
                     try {
-                        c = cartasEnJuego.get(i);
+                        c = juego.cartasEnJuego.get(i);
                         dy = 480;
                     } catch (Exception e) {}
                 } else {
                     try {
-                        c = cartasEnJuego.get(i + 1);
+                        c = juego.cartasEnJuego.get(i + 1);
                         dy = 301;
                     }catch(Exception e){
                     }
@@ -226,16 +185,7 @@ public class GameScreen extends BaseScreen {
 
     }
 
-    public void initialGameState() {
-        GameLogic.combo = null;
-        cartasEnJuego = new ArrayList<>();
-        yakus = new ArrayList<>();
 
-        for (int i = 0; i < 8; i++) {
-            Carta c = mazo.getRandomCard();
-            cartasEnJuego.add(c);
-        }
-    }
 
     public void showYakus() {
         Carta chiquita;
@@ -245,7 +195,7 @@ public class GameScreen extends BaseScreen {
         int dyR = 489;
         int dyL = 489;
 
-        for (Carta c : yakus) {
+        for (Carta c : juego.yakus) {
             chiquita =c;
             chiquita.setHeight(66);
             chiquita.setWidth(40);
