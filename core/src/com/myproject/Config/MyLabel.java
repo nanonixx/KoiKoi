@@ -2,13 +2,20 @@ package com.myproject.Config;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 public class MyLabel extends Label {
     static LabelStyle sLabelStyle = new LabelStyle();
+    private static final com.badlogic.gdx.Gdx Gdx = new Gdx();
+
+    static {
+//        sLabelStyle.font = new BitmapFont(com.badlogic.gdx.Gdx.files.internal("fonts/Arial/Arial.fnt"), Gdx.files.internal("fonts/Arial/Arial.png"), false);
+        sLabelStyle.font = new BitmapFont();
+
+    }
 
     LabelStyle labelStyle;
-
     public MyLabel(){
         super("", sLabelStyle);
 //
@@ -28,8 +35,17 @@ public class MyLabel extends Label {
         this(color);
         setText(charSequence);
         setPosition(x, y);
-        setFontScale(2.5f);
+        setFontScale(2.0f);
+        labelStyle = sLabelStyle;
     }
+    public MyLabel(CharSequence charSequence, Color color, float x, float y, float size){
+        this(color);
+        setText(charSequence);
+        setPosition(x, y);
+        setFontScale(size);
+        labelStyle = sLabelStyle;
+    }
+
 
     public MyLabel(float x, float y, Color color){
         this(color);

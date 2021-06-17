@@ -14,6 +14,7 @@ public class GameLogic {
     }
 
     public static String checkyakus(ArrayList<Carta> cartasGuardadas){ //return boolean
+combo = null;
 
         if (checkBasicas(cartasGuardadas)) combo = "basicas";
         if (checkRibbons(cartasGuardadas)) combo = "ribbon";

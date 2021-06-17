@@ -1,5 +1,6 @@
 package com.myproject.Screens;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -7,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.myproject.Config.BaseImageButton;
 import com.myproject.Config.BaseScreen;
 import com.myproject.Config.MyActor;
+import com.myproject.Config.MyLabel;
 import com.myproject.GameLogic;
 import com.myproject.MyGame;
 import com.myproject.Object.Carta;
@@ -20,6 +22,11 @@ public class GameScreen extends BaseScreen {
     private BaseImageButton buttonBack;
     private Image addCards;
     public Mazo mazo = new Mazo();
+
+    private MyLabel rondaLabel;
+    private MyLabel multLabel;
+    private MyLabel scoreP1Label;
+    private MyLabel scoreP2Label;
 
     public ArrayList<Carta> cartasMano;
     public ArrayList<Carta> cartasManoAI;
@@ -51,6 +58,14 @@ public class GameScreen extends BaseScreen {
     @Override
     public void show() {
         background = new Texture("backgrounds/GameScreen.png");
+
+        rondaLabel = new MyLabel(String.valueOf(rondas), Color.valueOf("#541651"), 535, 673);
+        stage.addActor(rondaLabel);
+        multLabel = new MyLabel("x"+String.valueOf(mult), Color.valueOf("541651"), 791, 677);
+        stage.addActor(multLabel);
+        scoreP1Label = new MyLabel(String.valueOf(score), Color.WHITE, 177, 605, 1.5f);
+        stage.addActor(scoreP1Label);
+
 
         buttonBack = new BaseImageButton("buttons/back.png", "buttons/back.png", 54, 54, 0, 666);
         buttonBack.onClick(()-> setScreen(new MainMenuScreen(game)));
@@ -180,7 +195,8 @@ public class GameScreen extends BaseScreen {
         for (Carta card : cartasEnJuego) {
             if (card.getMes() == nueva.getMes() && !card.image.equals(nueva.image)){
 
-               if (turno) {yakus.add(card);
+               if (turno) {
+                   yakus.add(card);
                    yakus.add(nueva);}
                else {
                    yakusAI.add(card);
@@ -267,10 +283,7 @@ public class GameScreen extends BaseScreen {
         for (Carta cMano : cartasManoAI) {
             for (Carta cMesa : cartasEnJuego) {
                 if (cMesa.getMes() == cMano.getMes()) {
-                    cMesa.remove();
 
-                    yakusAI.add(cMesa);
-                    yakusAI.add(cMano);
                     cartaMesa = cMesa;
                     cartaMano = cMano;
                             break;
@@ -286,6 +299,9 @@ public class GameScreen extends BaseScreen {
 
         }
         if (cartaMano != null) {
+            yakusAI.add(cartaMesa);
+            yakusAI.add(cartaMano);
+            cartaMesa.remove();
             cartasEnJuego.remove(cartaMesa);
             cartasManoAI.remove(cartaMano);
         }
