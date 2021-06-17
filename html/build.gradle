@@ -14,6 +14,12 @@ gwt {
     }
 }
 
+dependencies{
+
+    compile 'net.dermetfan.libgdx-utils:libgdx-utils:0.7.2:sources'
+    compile 'net.dermetfan.libgdx-utils:libgdx-utils-box2d:0.7.2:sources'
+}
+
 import org.wisepersist.gradle.plugins.gwt.GwtSuperDev
 import org.akhikhl.gretty.AppBeforeIntegrationTestTask
 
@@ -67,7 +73,7 @@ task dist(dependsOn: [clean, compileGwt]) {
         copy {
             from "webapp"
             into "build/dist"
-            }
+        }
         copy {
             from "war"
             into "build/dist"

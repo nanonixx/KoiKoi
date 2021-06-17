@@ -20,13 +20,14 @@ public class GameScreen extends BaseScreen {
 
     private Texture background;
     private BaseImageButton buttonBack;
+    private BaseImageButton buttonInfo;
     private Image addCards;
     public Mazo mazo = new Mazo();
 
     private MyLabel rondaLabel;
     private MyLabel multLabel;
     private MyLabel scoreP1Label;
-    private MyLabel scoreP2Label;
+    private MyLabel scoreAILabel;
 
     public ArrayList<Carta> cartasMano;
     public ArrayList<Carta> cartasManoAI;
@@ -65,11 +66,17 @@ public class GameScreen extends BaseScreen {
         stage.addActor(multLabel);
         scoreP1Label = new MyLabel(String.valueOf(score), Color.WHITE, 177, 605, 1.5f);
         stage.addActor(scoreP1Label);
+        scoreAILabel = new MyLabel(String.valueOf(score), Color.WHITE, 1136, 605, 1.5f);
+        stage.addActor(scoreAILabel);
 
 
-        buttonBack = new BaseImageButton("buttons/back.png", "buttons/back.png", 54, 54, 0, 666);
+        buttonBack = new BaseImageButton("backMini", 54, 54, 0, 666);
         buttonBack.onClick(()-> setScreen(new MainMenuScreen(game)));
         stage.addActor(buttonBack);
+
+        buttonInfo = new BaseImageButton("info", 54, 54, 1227, 666);
+        buttonInfo.onClick(()-> setScreen(new MainMenuScreen(game)));
+        stage.addActor(buttonInfo);
 
         addCards = new Image(new Texture("elementos/addCard.png"));
         addCards.addListener(new InputListener() {
