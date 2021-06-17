@@ -15,6 +15,7 @@ import com.myproject.GameLogic;
 import com.myproject.MyGame;
 import com.myproject.Object.Carta;
 import com.myproject.Object.Mazo;
+import com.myproject.YakuOverlay;
 
 import java.util.ArrayList;
 
@@ -72,28 +73,17 @@ public class GameScreen extends BaseScreen {
         stage.addActor(scoreP1Label);
         scoreAILabel = new MyLabel(String.valueOf(score), Color.WHITE, 1136, 605, 1.5f);
         stage.addActor(scoreAILabel);
-
+        buttonInfo = new BaseImageButton("info", 54, 54, 1227, 666);
+        buttonInfo.onClick(()-> YakuOverlay.showyakuOverlay(stage));
+        stage.addActor(buttonInfo);
 
         buttonBack = new BaseImageButton("backMini", 54, 54, 0, 666);
         buttonBack.onClick(()-> setScreen(new MainMenuScreen(game)));
         stage.addActor(buttonBack);
 
 
-        yakuPopUp = new Image(new Texture("overlay/yakus_popup.png"));
-        yakuPopUp.setPosition(155, 166);
-        yakuPopUp.addListener(new InputListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 
-                yakuPopUp.remove();
 
-                return super.touchDown(event, x, y, pointer, button);
-            }
-        });
-
-        buttonInfo = new BaseImageButton("info", 54, 54, 1227, 666);
-        buttonInfo.onClick(()-> stage.addActor(yakuPopUp));
-        stage.addActor(buttonInfo);
 
 
         addCards = new Image(new Texture("elementos/addCard.png"));

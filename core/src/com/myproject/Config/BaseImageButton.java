@@ -13,6 +13,7 @@ public class BaseImageButton extends ImageButton {
         void onClick();
     }
 
+
     public BaseImageButton(int ancho, int alto, int x, int y){
         super(new ImageButtonStyle());
         getStyle().up = new TextureRegionDrawable(new TextureRegion(new Texture("buttons/transparent.png")));
