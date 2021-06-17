@@ -12,16 +12,28 @@ public class YakuOverlay extends MyActor {
 
     private static Image yakuPopUp;
 
-    private static BaseImageButton closeOverlayBtn = new BaseImageButton("close", 43, 43, 100, 100);
-    private static BaseImageButton basicBtn = new BaseImageButton( "done",265, 35, 200, 455);
+    private static BaseImageButton closeOverlayBtn;
+    private static BaseImageButton closeOverlayBtnGeneral;
+    private static BaseImageButton basicBtn;
 
     public static void showyakuOverlay(Stage stage) {
+        closeOverlayBtn = new BaseImageButton("close", 43, 43, 100, 100);
+        closeOverlayBtnGeneral = new BaseImageButton("close", 43, 43, 100, 100);
+        basicBtn = new BaseImageButton( "transparent",265, 35, 200, 461);
+
         yakuPopUp = new Image(new Texture("overlay/yakus_popup.png"));
         yakuPopUp.setPosition(155, 166);
+
+        closeOverlayBtnGeneral.setPosition(1044, 523);
+
+        closeOverlayBtnGeneral.onClick(() -> {
+            yakuPopUp.remove();
+            closeOverlayBtnGeneral.remove();
+            basicBtn.remove();
+        });
+
         stage.addActor(yakuPopUp);
-
-
-
+        stage.addActor(closeOverlayBtnGeneral);
 
         showOverlay(stage, "basics");
 
@@ -35,7 +47,7 @@ public class YakuOverlay extends MyActor {
 
         basicBtn.onClick(() -> {
             stage.addActor(basicsImg);
-            createCloseButton(basicsImg);
+            createCloseButton(basicsImg, 895,510);
             stage.addActor(closeOverlayBtn);
         });
 
@@ -58,11 +70,11 @@ public class YakuOverlay extends MyActor {
 
     }
 
-    private static void createCloseButton(Image basicsImg) {
-        closeOverlayBtn.setPosition(895,510);
+    private static void createCloseButton(Image img, int dx, int dy) {
+        closeOverlayBtn.setPosition(dx, dy);
 
         closeOverlayBtn.onClick(() -> {
-            basicsImg.remove();
+            img.remove();
             closeOverlayBtn.remove();
         });
     }
