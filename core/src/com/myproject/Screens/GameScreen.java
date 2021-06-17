@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.myproject.Config.BaseImageButton;
 import com.myproject.Config.BaseScreen;
 import com.myproject.Config.MyActor;
@@ -28,6 +30,8 @@ public class GameScreen extends BaseScreen {
     private MyLabel multLabel;
     private MyLabel scoreP1Label;
     private MyLabel scoreAILabel;
+
+    private Image yakuPopUp;
 
     public ArrayList<Carta> cartasMano;
     public ArrayList<Carta> cartasManoAI;
@@ -74,9 +78,23 @@ public class GameScreen extends BaseScreen {
         buttonBack.onClick(()-> setScreen(new MainMenuScreen(game)));
         stage.addActor(buttonBack);
 
+
+        yakuPopUp = new Image(new Texture("overlay/yakus_popup.png"));
+        yakuPopUp.setPosition(155, 166);
+        yakuPopUp.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+
+                yakuPopUp.remove();
+
+                return super.touchDown(event, x, y, pointer, button);
+            }
+        });
+
         buttonInfo = new BaseImageButton("info", 54, 54, 1227, 666);
-        buttonInfo.onClick(()-> setScreen(new MainMenuScreen(game)));
+        buttonInfo.onClick(()-> stage.addActor(yakuPopUp));
         stage.addActor(buttonInfo);
+
 
         addCards = new Image(new Texture("elementos/addCard.png"));
         addCards.addListener(new InputListener() {

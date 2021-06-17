@@ -13,6 +13,12 @@ public class BaseImageButton extends ImageButton {
         void onClick();
     }
 
+    public BaseImageButton(int ancho, int alto, int x, int y){
+        super(new ImageButtonStyle());
+        getStyle().up = new TextureRegionDrawable(new TextureRegion(new Texture("buttons/transparent.png")));
+        setSize(ancho, alto);
+        setPosition(x, y);
+    }
 
 
     public BaseImageButton(String image_up, String image_over, int ancho, int alto, int x, int y){
@@ -22,6 +28,7 @@ public class BaseImageButton extends ImageButton {
         setSize(ancho, alto);
         setPosition(x, y);
     }
+
 
     public BaseImageButton(String image_up, int ancho, int alto, int x, int y) {
 

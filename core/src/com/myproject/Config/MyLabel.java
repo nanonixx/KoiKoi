@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 public class MyLabel extends Label {
-    static LabelStyle sLabelStyle = new LabelStyle();
+    public static LabelStyle sLabelStyle = new LabelStyle();
     private static final com.badlogic.gdx.Gdx Gdx = new Gdx();
 
     static {
