@@ -1,38 +1,40 @@
 package com.myproject;
 
 import com.myproject.Object.Carta;
+import com.myproject.Object.Yaku;
 import com.myproject.Screens.GameScreen;
 
 import java.util.ArrayList;
 
 public class GameLogic {
     private final MyGame game;
-    public static String combo = null;
+
+
+
 
     public GameLogic(MyGame game) {
         this.game = game;
     }
 
-    public static String checkyakus(ArrayList<Carta> cartasGuardadas){ //return boolean
-combo = null;
+    public static ArrayList<Yaku> checkyakus(ArrayList<Carta> cartasGuardadas){
+       ArrayList<Yaku> yakus = new ArrayList<>();
 
-        if (checkBasicas(cartasGuardadas)) combo = "basicas";
-        if (checkRibbons(cartasGuardadas)) combo = "ribbon";
-        if (checkTane(cartasGuardadas)) combo = "tane";
+        if (checkBasicas(cartasGuardadas)) yakus.add(new Yaku("basic", 1));
+        if (checkRibbons(cartasGuardadas)) yakus.add(new Yaku("ribbon", 1));
+        if (checkTane(cartasGuardadas)) yakus.add(new Yaku("tane", 1));
 
-        if (checkAotan(cartasGuardadas)) combo = "aotan";
-        if (checkAkatan(cartasGuardadas)) combo = "akatan";
-        if (checkBDB(cartasGuardadas)) combo = "bdb";
+        if (checkAotan(cartasGuardadas)) yakus.add(new Yaku("aotan", 5));
+        if (checkAkatan(cartasGuardadas)) yakus.add(new Yaku("akatan", 5));
+        if (checkBDB(cartasGuardadas)) yakus.add(new Yaku("bdb", 5));
 
-        if (checkLuna(cartasGuardadas)) combo = "luna";
-        if (checkFlores(cartasGuardadas)) combo = "flores";
+        if (checkLuna(cartasGuardadas)) yakus.add(new Yaku("moon", 5));
+        if (checkFlores(cartasGuardadas)) yakus.add(new Yaku("flower", 5));
 
-        if (checkThree(cartasGuardadas)) combo = "Tres luces";
-        if (checkFour(cartasGuardadas)) combo = "Cuatro luces";
-        if (checkFive(cartasGuardadas)) combo = "Cinco luces";
+        if (checkThree(cartasGuardadas)) yakus.add(new Yaku("threeLights", 5));
+        if (checkFour(cartasGuardadas)) yakus.add(new Yaku("fourLights", 8));
+        if (checkFive(cartasGuardadas)) yakus.add(new Yaku("fiveLights", 10));
 
-        return combo;
-
+        return yakus;
 
     }
 

@@ -15,6 +15,7 @@ import com.myproject.GameLogic;
 import com.myproject.MyGame;
 import com.myproject.Object.Carta;
 import com.myproject.Object.Mazo;
+import com.myproject.Object.Yaku;
 import com.myproject.YakuOverlay;
 
 import java.util.ArrayList;
@@ -39,12 +40,15 @@ public class GameScreen extends BaseScreen {
     public ArrayList<Carta> cartasEnJuego;
     public ArrayList<Carta> yakus;
     public ArrayList<Carta> yakusAI;
+
+    ArrayList<Yaku> pCombos;
+    ArrayList<Yaku> AIcombos;
     public ArrayList<String> yakusAInames;
 
     Carta selectedCard;
     Carta playingCard;
 
-    boolean turn = true, gameOver = false;
+    boolean turn = true, gameOver = false, newYaku = false;
     int rondas = 1, score = 50, scoreAI = 50, mult = 1;
 
 
@@ -162,8 +166,11 @@ public class GameScreen extends BaseScreen {
             for (Carta c: cartasMano) {
                 if (c == carta) {
                     selectedCard = carta;
+                    carta.setY(47);
                     selected = true;
-                    break;
+                }
+                else{
+                    c.setY(27);
                 }
             }
             onPlayCardAction(carta);
@@ -191,12 +198,18 @@ public class GameScreen extends BaseScreen {
                         cartasMano.remove(selectedCard);
                         acabarTurno(true);
 
+                        pCombos= GameLogic.checkyakus(yakus);
+
+                        showIfYaku(pCombos, true);
                         AIplay();
+                        showIfYaku(AIcombos, false);
                     }
                 }
             }
         }
     }
+
+
 
     private void acabarTurno(boolean turno) {
 
@@ -234,11 +247,14 @@ public class GameScreen extends BaseScreen {
 
         showYakus();
         showYakusAI();
-        System.out.println("Yakus P1: "+GameLogic.checkyakus(yakus) + " y tiene estas cartas: "+cartasManoAI.size());
-        System.out.println("Yakus AI: "+GameLogic.checkyakus(yakusAI));
 
         mostrarCartasEnJuego();
         selected = false;
+
+
+        AIcombos= GameLogic.checkyakus(yakusAI);
+
+
     }
 
 
@@ -281,7 +297,6 @@ public class GameScreen extends BaseScreen {
     }
 
     public void initialGameState() {
-        GameLogic.combo = null;
         cartasEnJuego = new ArrayList<>();
         yakus = new ArrayList<>();
         yakusAI = new ArrayList<>();
@@ -414,6 +429,35 @@ public class GameScreen extends BaseScreen {
             }
 
         }
+    }
+
+    private void showIfYaku(ArrayList<Yaku> combos, boolean player) {
+        float dy = 240f;
+
+        if (player) {
+            float dx = 282f;
+
+            for (Yaku yk : combos) {
+                Image combo = new Image(new Texture("elementos/"+yk.getName()+"Frame.png"));
+                combo.setPosition(dx, dy);
+                stage.addActor(combo);
+                dx = dx + 100 + 12;
+                System.out.println(combo.getImageWidth());
+            }
+        }
+
+        else {
+            float dx = 1000f;
+            for (Yaku yk : combos) {
+                Image combo = new Image(new Texture("elementos/"+yk.getName()+"Frame.png"));
+                dx -= 100;
+                combo.setPosition(dx, dy);
+                stage.addActor(combo);
+                dx = dx - 100 - 12;
+                System.out.println(combo.getImageWidth());
+            }
+        }
+
     }
 
 

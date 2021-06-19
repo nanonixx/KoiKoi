@@ -41,6 +41,8 @@ public class YakuOverlay extends MyActor {
         thLightBtn =  new BaseImageButton( "transparent",451, 35, 614, 440);
         foLightBtn =  new BaseImageButton( "transparent",467, 35, 614, 396);
         fiLightBtn =  new BaseImageButton( "transparent",300, 35, 614, 351);
+        moonBtn =  new BaseImageButton( "transparent",300, 35, 614, 305);
+        flowerBtn =  new BaseImageButton( "transparent",441, 35, 614, 259);
 
 
         //pone la imagen con todos los yakus explicados
@@ -53,6 +55,18 @@ public class YakuOverlay extends MyActor {
             yakuPopUp.remove();
             closeOverlayBtnGeneral.remove();
             basicBtn.remove();
+            ribbonBtn.remove();
+            taneBtn.remove();
+            blueBtn.remove();
+            redBtn.remove();
+            bdbBtn.remove();
+
+            thLightBtn.remove();
+            foLightBtn.remove();
+            fiLightBtn.remove();
+            moonBtn.remove();
+            flowerBtn.remove();
+
         });
 
         //añade boton e imagen de antes
@@ -145,6 +159,24 @@ public class YakuOverlay extends MyActor {
         fiLightBtn.onClick(() -> {
             stage.addActor(img5);
             createCloseButton(img5,  809, 404);
+            stage.addActor(closeOverlayBtn);
+        });
+
+        stage.addActor(moonBtn);
+        Image imgmoon = new Image(new Texture("overlay/luna.png"));
+        imgmoon.setPosition(((1280f/2)-(186f/2)), (720f/2)-(142f/2));
+        moonBtn.onClick(() -> {
+            stage.addActor(imgmoon);
+            createCloseButton(imgmoon,  703, 404);
+            stage.addActor(closeOverlayBtn);
+        });
+
+        stage.addActor(flowerBtn);
+        Image imgFwr = new Image(new Texture("overlay/flores.png"));
+        imgFwr.setPosition(((1280f/2)-(186f/2)), (720f/2)-(142f/2));
+        flowerBtn.onClick(() -> {
+            stage.addActor(imgFwr);
+            createCloseButton(imgFwr,  703, 404);
             stage.addActor(closeOverlayBtn);
         });
 
