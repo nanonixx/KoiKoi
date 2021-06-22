@@ -315,6 +315,8 @@ public class GameScreen extends BaseScreen {
         yakus = new ArrayList<>();
         yakusAI = new ArrayList<>();
 
+        System.out.println("INITIAL GAME STATE");
+
         mult = 1;
         yakuSizeP = 0;
         yakuSizeAI = 0;
@@ -476,10 +478,9 @@ public class GameScreen extends BaseScreen {
 
             if (yakuSizeAI != combos.size()) {
                 Random rnd = new Random();
-                int rndNumber = rnd.nextInt(1);
-                if (rndNumber == 0) System.out.println("AI uses KoiKoi!");
-                else if (rndNumber == 1) System.out.println("AI se planta!");
-                else System.out.println("wtf como va a ser " + rndNumber);
+                boolean rndBool = rnd.nextBoolean();
+                if (rndBool) System.out.println("AI uses KoiKoi!");
+                else if (!rndBool) System.out.println("AI se planta!");
 
                 yakuSizeAI = combos.size();
             }
@@ -505,7 +506,7 @@ public class GameScreen extends BaseScreen {
             scoreYaku += yk.getPoints();
         }
         System.out.println(scoreYaku);
-        comboScore = new MyLabel(String.valueOf(scoreYaku), Color.WHITE, 494, 562, 1.5f);
+        comboScore = new MyLabel(String.valueOf(scoreYaku), Color.WHITE, 570f, 375, 1.5f);
         stage.addActor(comboScore);
 
         Image finalCombo = combo;
@@ -519,6 +520,7 @@ public class GameScreen extends BaseScreen {
             koiKoiBtn.remove();
             score += finalScoreYaku * mult;
             initialGameState();
+
         });
         stage.addActor(mePlantoBtn);
 
@@ -526,6 +528,7 @@ public class GameScreen extends BaseScreen {
             mult = 2;
             yakuPopUp.remove();
             finalCombo.remove();
+            comboScore.remove();
             mePlantoBtn.remove();
             koiKoiBtn.remove();
         });
