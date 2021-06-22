@@ -31,12 +31,13 @@ public class GameScreen extends BaseScreen {
     private BaseImageButton koiKoiBtn;
 
     private Image addCards;
-    public Mazo mazo = new Mazo();
+    public Mazo mazo;
 
     private MyLabel rondaLabel;
     private MyLabel multLabel;
     private MyLabel scoreP1Label;
     private MyLabel scoreAILabel;
+    private MyLabel comboScore;
 
     private MyLabel scorep1ask;
 
@@ -63,10 +64,8 @@ public class GameScreen extends BaseScreen {
     public GameScreen(MyGame game) {
         super(game);
 
-        cartasMano = addToMano();
-        cartasManoAI = addToMano();
-            initialGameState();
 
+        initialGameState();
 
 
     }
@@ -77,27 +76,26 @@ public class GameScreen extends BaseScreen {
 
         rondaLabel = new MyLabel(String.valueOf(rondas), Color.valueOf("#541651"), 535, 673);
         stage.addActor(rondaLabel);
-        multLabel = new MyLabel("x"+String.valueOf(mult), Color.valueOf("541651"), 791, 677);
+        multLabel = new MyLabel("x" + String.valueOf(mult), Color.valueOf("541651"), 791, 677);
         stage.addActor(multLabel);
         scoreP1Label = new MyLabel(String.valueOf(score), Color.WHITE, 177, 605, 1.5f);
         stage.addActor(scoreP1Label);
         scoreAILabel = new MyLabel(String.valueOf(score), Color.WHITE, 1136, 605, 1.5f);
         stage.addActor(scoreAILabel);
+
         buttonInfo = new BaseImageButton("info", 54, 54, 1227, 666);
-        buttonInfo.onClick(()-> YakuOverlay.showyakuOverlay(stage));
+        buttonInfo.onClick(() -> YakuOverlay.showyakuOverlay(stage));
         stage.addActor(buttonInfo);
 
-        mePlantoBtn = new BaseImageButton("done", 201, 98,412, 251);
-        koiKoiBtn = new BaseImageButton("koikoi", 201, 98, 666, 251);
+        mePlantoBtn = new BaseImageButton("done", 209, 98, 412, 243);
+        koiKoiBtn = new BaseImageButton("koikoi", 209, 98, 666, 243);
 
         buttonBack = new BaseImageButton("backMini", 54, 54, 0, 666);
-        buttonBack.onClick(()-> setScreen(new MainMenuScreen(game)));
+        buttonBack.onClick(() -> setScreen(new MainMenuScreen(game)));
         stage.addActor(buttonBack);
 
         yakuPopUp = new Image(new Texture("overlay/popupYaku.png"));
-        yakuPopUp.setPosition(((1280f/2)-(557f/2)), (720f/2)-(354f/2));
-
-
+        yakuPopUp.setPosition(((1280f / 2) - (557f / 2)), (720f / 2) - (354f / 2));
 
 
         addCards = new Image(new Texture("elementos/addCard.png"));
@@ -136,10 +134,9 @@ public class GameScreen extends BaseScreen {
 //        super.dispose();
     }
 
-    public ArrayList<Carta> addToMano(){
+    public ArrayList<Carta> addToMano(Mazo mazo) {
         ArrayList<Carta> manita = new ArrayList<>();
-
-        for (int i = 75; i < 1100; i+=122+22) {
+        for (int i = 75; i < 1100; i += 122 + 22) {
             Carta c = mazo.getRandomCard();
             manita.add(c);
             c.setWidth(122);
@@ -150,22 +147,22 @@ public class GameScreen extends BaseScreen {
         return manita;
     }
 
-    public void mostrarMano(){
+    public void mostrarMano() {
         for (Carta c : cartasMano)
             stage.addActor(c);
     }
 
     private void activarListeners() {
-            cartasMano.forEach(carta -> {
-                carta.setListener(() -> {
-                    touched(carta);
-                });
+        cartasMano.forEach(carta -> {
+            carta.setListener(() -> {
+                touched(carta);
             });
-            cartasEnJuego.forEach(carta -> {
-                carta.setListener(() -> {
-                    touched(carta);
-                });
+        });
+        cartasEnJuego.forEach(carta -> {
+            carta.setListener(() -> {
+                touched(carta);
             });
+        });
     }
 
     private void desactivarListeners() {
@@ -177,32 +174,30 @@ public class GameScreen extends BaseScreen {
         }
     }
 
-        public void touched(Carta carta) {
+    public void touched(Carta carta) {
 
-            for (Carta c: cartasMano) {
-                if (c == carta) {
-                    selectedCard = carta;
-                    carta.setY(47);
-                    selected = true;
-                }
-                else{
-                    c.setY(27);
-                }
+        for (Carta c : cartasMano) {
+            if (c == carta) {
+                selectedCard = carta;
+                carta.setY(47);
+                selected = true;
+            } else {
+                c.setY(27);
             }
-            onPlayCardAction(carta);
+        }
+        onPlayCardAction(carta);
 
 //        System.out.println("Juego " + selectedCard.image + " a esta carta: " + playingCard.image);
-            desactivarListeners();
-            System.out.println(rondas + " " + mult);
-        }
+        desactivarListeners();
+    }
 
     private void onPlayCardAction(Carta carta) {
-        for (Carta c: cartasEnJuego.toArray(new Carta[0])) {
+        for (Carta c : cartasEnJuego.toArray(new Carta[0])) {
             if (selected) {
                 if (c == carta) {
                     playingCard = carta;
 
-                    if (selectedCard.getMes()==(playingCard.getMes())) {
+                    if (selectedCard.getMes() == (playingCard.getMes())) {
 
                         selectedCard.remove();
                         carta.remove();
@@ -212,10 +207,10 @@ public class GameScreen extends BaseScreen {
 
                         cartasEnJuego.remove(playingCard);
                         cartasMano.remove(selectedCard);
-                        selectedCard=null;
+                        selectedCard = null;
                         acabarTurno(true);
 
-                        pCombos= GameLogic.checkyakus(yakus);
+                        pCombos = GameLogic.checkyakus(yakus);
                         showIfYaku(pCombos, true);
 
                         showIfYaku(AIcombos, false);
@@ -224,7 +219,6 @@ public class GameScreen extends BaseScreen {
             }
         }
     }
-
 
 
     private void acabarTurno(boolean turno) {
@@ -237,15 +231,15 @@ public class GameScreen extends BaseScreen {
         Carta trobadaCard = null;
 
         for (Carta card : cartasEnJuego) {
-            if (card.getMes() == nueva.getMes() && !card.image.equals(nueva.image)){
+            if (card.getMes() == nueva.getMes() && !card.image.equals(nueva.image)) {
 
-               if (turno) {
-                   yakus.add(card);
-                   yakus.add(nueva);}
-               else {
-                   yakusAI.add(card);
-                   yakusAI.add(nueva);
-               }
+                if (turno) {
+                    yakus.add(card);
+                    yakus.add(nueva);
+                } else {
+                    yakusAI.add(card);
+                    yakusAI.add(nueva);
+                }
 
                 trobadaCard = card;
 
@@ -255,9 +249,9 @@ public class GameScreen extends BaseScreen {
             }
         }
 
-        if (trobadaCard!=null) {
-                cartasEnJuego.remove(nueva);
-                cartasEnJuego.remove(trobadaCard);
+        if (trobadaCard != null) {
+            cartasEnJuego.remove(nueva);
+            cartasEnJuego.remove(trobadaCard);
         }
 
 
@@ -268,7 +262,7 @@ public class GameScreen extends BaseScreen {
         selected = false;
 
 
-        AIcombos= GameLogic.checkyakus(yakusAI);
+        AIcombos = GameLogic.checkyakus(yakusAI);
 
 
     }
@@ -279,7 +273,7 @@ public class GameScreen extends BaseScreen {
         Carta c = null;
         addCards.remove();
 
-        for (int i = 0; i < cartasEnJuego.size(); i+=2) {
+        for (int i = 0; i < cartasEnJuego.size(); i += 2) {
 
             //coloca las cartas en juego en su sitio, da igual cuantas haya
             for (int j = 0; j < 2; j++) {
@@ -287,12 +281,13 @@ public class GameScreen extends BaseScreen {
                     try {
                         c = cartasEnJuego.get(i);
                         dy = 480;
-                    } catch (Exception e) {}
+                    } catch (Exception e) {
+                    }
                 } else {
                     try {
                         c = cartasEnJuego.get(i + 1);
                         dy = 301;
-                    }catch(Exception e){
+                    } catch (Exception e) {
                     }
                 }
 
@@ -313,9 +308,16 @@ public class GameScreen extends BaseScreen {
     }
 
     public void initialGameState() {
+        mazo = new Mazo();
+        cartasMano = addToMano(mazo);
+        cartasManoAI = addToMano(mazo);
         cartasEnJuego = new ArrayList<>();
         yakus = new ArrayList<>();
         yakusAI = new ArrayList<>();
+
+        mult = 1;
+        yakuSizeP = 0;
+        yakuSizeAI = 0;
 
         for (int i = 0; i < 8; i++) {
             Carta c = mazo.getRandomCard();
@@ -332,7 +334,7 @@ public class GameScreen extends BaseScreen {
 
                     cartaMesa = cMesa;
                     cartaMano = cMano;
-                            break;
+                    break;
                 }
             }
         }
@@ -353,12 +355,10 @@ public class GameScreen extends BaseScreen {
         }
 
         acabarTurno(false);
-        if (cartaMano != null) System.out.println("AI jugado ya "+ cartaMano.getImage() + " en " + cartaMesa.getImage());
+        if (cartaMano != null)
+            System.out.println("AI jugado ya " + cartaMano.getImage() + " en " + cartaMesa.getImage());
         System.out.println("AI tiene estos yakus: " + yakusAI.size());
     }
-
-
-
 
 
     public void showYakus() {
@@ -370,11 +370,11 @@ public class GameScreen extends BaseScreen {
         int dyL = 489;
 
         for (Carta c : yakus) {
-            chiquita =c;
+            chiquita = c;
             chiquita.setHeight(66);
             chiquita.setWidth(40);
 
-            switch (c.getTipo()){
+            switch (c.getTipo()) {
                 case "BASE":
 
                     chiquita.setPosition(64, dyB);
@@ -413,11 +413,11 @@ public class GameScreen extends BaseScreen {
         int dyL = 489;
 
         for (Carta c : yakusAI) {
-            chiquita =c;
+            chiquita = c;
             chiquita.setHeight(66);
             chiquita.setWidth(40);
 
-            switch (c.getTipo()){
+            switch (c.getTipo()) {
                 case "BASE":
 
                     chiquita.setPosition(1027, dyB);
@@ -454,35 +454,32 @@ public class GameScreen extends BaseScreen {
             float dx = 282f;
 
             for (Yaku yk : combos) {
-                Image combo = new Image(new Texture("elementos/"+yk.getName()+"Frame.png"));
+                Image combo = new Image(new Texture("elementos/" + yk.getName() + "Frame.png"));
                 combo.setPosition(dx, dy);
                 stage.addActor(combo);
                 dx = dx + 100 + 12;
             }
 
-            if (yakuSizeP != combos.size() && player){
+            if (yakuSizeP != combos.size() && player) {
                 askKoiKoi();
                 yakuSizeP = combos.size();
-            }
-            else AIplay();
-        }
-
-        else {
+            } else AIplay();
+        } else {
             float dx = 1000f;
             for (Yaku yk : combos) {
-                Image combo = new Image(new Texture("elementos/"+yk.getName()+"Frame.png"));
-                dx -= 100;
+                Image combo = new Image(new Texture("elementos/" + yk.getName() + "Frame.png"));
+                dx -= 10;
                 combo.setPosition(dx, dy);
                 stage.addActor(combo);
                 dx = dx - 100 - 12;
             }
 
-            if (yakuSizeAI != combos.size()){
+            if (yakuSizeAI != combos.size()) {
                 Random rnd = new Random();
                 int rndNumber = rnd.nextInt(1);
-                if (rndNumber==0) System.out.println("AI uses KoiKoi!");
-                else if (rndNumber==1) System.out.println("AI se planta!");
-                else System.out.println("wtf como va a ser "+rndNumber);
+                if (rndNumber == 0) System.out.println("AI uses KoiKoi!");
+                else if (rndNumber == 1) System.out.println("AI se planta!");
+                else System.out.println("wtf como va a ser " + rndNumber);
 
                 yakuSizeAI = combos.size();
             }
@@ -494,36 +491,46 @@ public class GameScreen extends BaseScreen {
 
     public void askKoiKoi() {
         stage.addActor(yakuPopUp);
-        int score = 0;
+        int scoreYaku = 0;
+        Image combo = null;
 
         float dx = 570f;
-        float dy = 420f;
+        float dy = 414f;
 
         for (Yaku yk : pCombos) {
-            Image combo = new Image(new Texture("elementos/"+yk.getName()+"Frame.png"));
+            combo = new Image(new Texture("elementos/" + yk.getName() + "Frame.png"));
             combo.setPosition(dx, dy);
             stage.addActor(combo);
             dx = dx + 100 + 12;
-            score += yk.getPoints();
-
-            mePlantoBtn.onClick(() -> {
-                rondas++;
-                yakuPopUp.remove();
-                combo.remove();
-                mePlantoBtn.remove();
-                koiKoiBtn.remove();
-            });
-            stage.addActor(mePlantoBtn);
-
-            koiKoiBtn.onClick(() -> {
-                mult = 2;
-                yakuPopUp.remove();
-                combo.remove();
-                mePlantoBtn.remove();
-                koiKoiBtn.remove();
-            });
-            stage.addActor(koiKoiBtn);
+            scoreYaku += yk.getPoints();
         }
+        System.out.println(scoreYaku);
+        comboScore = new MyLabel(String.valueOf(scoreYaku), Color.WHITE, 494, 562, 1.5f);
+        stage.addActor(comboScore);
+
+        Image finalCombo = combo;
+        int finalScoreYaku = scoreYaku;
+        mePlantoBtn.onClick(() -> {
+            rondas++;
+            yakuPopUp.remove();
+            finalCombo.remove();
+            mePlantoBtn.remove();
+            comboScore.remove();
+            koiKoiBtn.remove();
+            score += finalScoreYaku * mult;
+            initialGameState();
+        });
+        stage.addActor(mePlantoBtn);
+
+        koiKoiBtn.onClick(() -> {
+            mult = 2;
+            yakuPopUp.remove();
+            finalCombo.remove();
+            mePlantoBtn.remove();
+            koiKoiBtn.remove();
+        });
+        stage.addActor(koiKoiBtn);
+
 
         scorep1ask = new MyLabel(String.valueOf(score), Color.WHITE, 495, 362);
 
