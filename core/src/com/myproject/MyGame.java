@@ -13,7 +13,7 @@ public class MyGame extends Game {
 	public void create () {
 
 
-		Juego juego = new Juego(this);
+
 		assets = new Assets();
 		assets.load();
 		setScreen(new MainMenuScreen(this));
