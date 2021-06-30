@@ -7,6 +7,7 @@ import com.myproject.Object.Mazo;
 import com.myproject.Object.Yaku;
 import com.myproject.Screens.GameScreen;
 
+import javax.smartcardio.Card;
 import java.util.ArrayList;
 
 public class Juego {
@@ -35,6 +36,11 @@ public class Juego {
         this.stage = stage;
         this.game = game;
         this.gs = gs;
+    }
+
+    public void doGame () {
+        initialGameState();
+
     }
 
     public ArrayList<Carta> addToMano(Mazo mazo) {

@@ -52,7 +52,7 @@ public class GameScreen extends BaseScreen {
         super(game);
 
 
-        juego.initialGameState();
+        juego.doGame();
 
 
     }
@@ -395,6 +395,7 @@ public class GameScreen extends BaseScreen {
             comboScore.remove();
             koiKoiBtn.remove();
             juego.score += finalScoreYaku * juego.mult;
+            setScreen(new GameScreen(game));
             juego.initialGameState();
 
         });
